@@ -112,7 +112,7 @@ class UploadHandler(tornado.web.RequestHandler):
 
         # check extension of uploaded file
         if uploaded_file != None:
-            allowed_extensions = [".jpg", ".png", ".gif"]
+            allowed_extensions = [".jpg", ".jpeg", ".png", ".gif"]
             extension_uploaded_file = os.path.splitext(uploaded_file['filename'])[1]
 
             if extension_uploaded_file not in allowed_extensions:
