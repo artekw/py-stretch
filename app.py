@@ -194,6 +194,6 @@ if __name__ == "__main__":
         os.mkdir(data_dir)
 
     app = make_app()
-    app.listen(8888)
+    app.listen('PORT')
     print("Start app")
     tornado.ioloop.IOLoop.current().start()
