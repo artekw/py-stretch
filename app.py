@@ -32,10 +32,10 @@ def send_to_all_clients(message):
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-        alert = None
+        alert_msg = None
         send_to_all_clients("Open con")
         # alert = {"type": "info", "msg":"info alert"}
-        self.render("home.html", alert=alert)
+        self.render("home.html", alert_msg=alert_msg)
 
 
 class ConvertHandler(tornado.web.RequestHandler):
