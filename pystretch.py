@@ -7,6 +7,8 @@ import glob
 from PyPDF2 import PdfFileWriter, PdfFileReader
 from PIL import Image
 
+Image.MAX_IMAGE_PIXELS = 1000000000  
+
 # rozmiar formatów
 # szer x wys w pikselach 300dpi
 A4 = (2480, 3508)
