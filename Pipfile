@@ -1,0 +1,16 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+autopep8 = "*"
+
+[packages]
+tornado = "*"
+pypdf2 = "*"
+pillow = "*"
+img2pdf = "*"
+
+[requires]
+python_version = "3.7"

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Cięcie obrazów{% end %}
+
+{% block content %}
+
+    {% if alert is not None %}
+        <div class="alert alert-danger" role="alert">
+        {{ alert_msg['msg'] }}
+        </div>
+    {% end %}
+
+    <form enctype="multipart/form-data" action="/upload" method="post">
+    <div class="form-group row">
+        <label for="inputPassword3" class="col-sm-2 col-form-label"><b>Obrazek</b></label>
+        <div class="col-sm-10">
+            <div class="custom-file">
+                <input type="file" name="uploaded_file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                <label class="custom-file-label" for="inputGroupFile01">Wybierz plik obrazu</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="pdf_file_name" class="col-sm-2 col-form-label"><b>Plik PDF</b></label>
+            <div class="col-sm-10">
+                <input type="text" name="pdf_file" class="form-control" id="pdf_file_name" placeholder="Nazwa pliku PDF">
+            </div>
+    </div>
+    <fieldset class="form-group">
+        <div class="row">
+        <legend class="col-form-label col-sm-2 pt-0"><b>Rozmiar plakatu</b></legend>
+        <div class="col-sm-10">
+            <div class="form-check">
+            <input class="form-check-input" type="radio" name="size" id="size1" value="A0">
+            <label class="form-check-label" for="size1">
+                A0
+            </label>
+            </div>
+            <div class="form-check">
+            <input class="form-check-input" type="radio" name="size" id="size1" value="A1">
+            <label class="form-check-label" for="size1">
+                A1
+            </label>
+            </div>
+            <div class="form-check">
+            <input class="form-check-input" type="radio" name="size" id="size2" value="A2">
+            <label class="form-check-label" for="size2">
+                A2
+            </label>
+            </div>
+            <div class="form-check">
+            <input class="form-check-input" type="radio" name="size" id="size3" value="A3" checked>
+            <label class="form-check-label" for="size3">
+                A3
+            </label>
+            </div>
+        </div>
+        </div>
+    </fieldset>
+
+    <div class="form-group row">
+        <div class="col-sm-10">
+        <button type="submit" class="btn btn-primary">Wyślij plik</button>
+        </div>
+    </div>
+</form>
+{% end %}
