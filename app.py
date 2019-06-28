@@ -46,14 +46,14 @@ class ConvertHandler(tornado.web.RequestHandler):
         temp_dir = base + '/tmp'
 
         # size url paramater
-        size = self.get_argument('size')
-        if size == "A0":
+        size_user = self.get_argument('size')
+        if size_user == "A0":
             size = (9933, 14043)
-        elif size == "A1":
+        elif size_user == "A1":
             size = (7016, 9933)
-        elif size == "A2":
+        elif size_user == "A2":
             size = (4961, 7016)
-        elif size == "A3":
+        elif size_user == "A3":
             size = (3508, 4961)
         else:
             size = (2480, 3508)
@@ -72,7 +72,7 @@ class ConvertHandler(tornado.web.RequestHandler):
         # logs.append("Obrazek został przeskalowany")
         # send_to_all_clients("Obrazek został przeskalowany...")
 
-        if size == "A3":
+        if size_user == "A3":
             pystretch.cut_image(
                 '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext), 3508, 2480)
         else:
