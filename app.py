@@ -72,8 +72,12 @@ class ConvertHandler(tornado.web.RequestHandler):
         # logs.append("Obrazek został przeskalowany")
         # send_to_all_clients("Obrazek został przeskalowany...")
 
-        pystretch.cut_image(
-            '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext), 2480, 3508)
+        if size == "A3":
+            pystretch.cut_image(
+                '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext), 3508, 2480)
+        else:
+            pystretch.cut_image(
+                '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext), 2480, 3508)
 
         # logging.info("Obrazek został pociety na kawałki")
         # send_to_all_clients("Obrazek został pociety na kawałki...")

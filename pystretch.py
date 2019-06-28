@@ -7,6 +7,14 @@ import glob
 from PyPDF2 import PdfFileWriter, PdfFileReader
 from PIL import Image
 
+# rozmiar formatów
+# szer x wys w pikselach 300dpi
+A4 = (2480, 3508)
+A3 = (3508, 4961)
+A2 = (4961, 7016)
+A1 = (7016, 9933)
+A0 = (9933, 14043)
+
 
 def resize_image(filename, resize_to, output='resized_image.jpg', fill_color=(255, 255, 255, 255)):
     img = Image.open(filename)
@@ -40,6 +48,7 @@ def cut_image(filename, width=None, height=None):
         sys.exit(1)
 
     if img.size[0] > img.size[1]:
+        # print("Obracam")
         width, height = height, width
 
 
@@ -98,9 +107,9 @@ def hashtag():
 #                 os.mkdir(sesion_folder)
 #                 print(f)
 #                 resize_image(
-#                     f, A0, '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext))
+#                     f, A3, '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext))
 #                 cut_image(
-#                     '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext), 2480, 3508)
+#                     '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext), 2408, 3505)
 
 #                 # merge pdf's in one document
 #                 paths = [sesion_folder + '/' + pdf for pdf in os.listdir(sesion_folder)]
