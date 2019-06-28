@@ -183,7 +183,7 @@ def make_app():
 if __name__ == "__main__":
     base = os.getcwd()
     temp_dir = base + '/tmp'
-    data_dir = base + '/data'
+    data_dir = base + '/static/data'
 
     if not os.path.isdir(temp_dir):
         logging.info("Tworze katalog plików tymczasowych")
