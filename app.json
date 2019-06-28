@@ -1,0 +1,10 @@
+{
+    "name": "py-stretch",
+    "description": "Image stretch do large scale",
+    "repository": "https://github.com/artekw/py-stretch",
+    "keywords": ["python", "tornado"],
+    "success_url": "/",
+    "env": {
+        "BUILDPACK_URL": "https://github.com/heroku/heroku-buildpack-python"
+    }
+}
