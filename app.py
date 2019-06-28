@@ -1,4 +1,5 @@
 import os
+import shutil
 import random
 import string
 import logging
@@ -192,10 +193,19 @@ if __name__ == "__main__":
     if not os.path.isdir(temp_dir):
         logging.info("Tworze katalog plików tymczasowych")
         os.mkdir(temp_dir)
+    else:
+        # delete and create clean folder
+        shutil.rmtree(temp_dir)
+        os.mkdir(temp_dir)
 
     if not os.path.isdir(data_dir):
         logging.info("Tworze katalog plików aplikacji")
         os.mkdir(data_dir)
+    else:
+        # delete and create clean folder
+        shutil.rmtree(data_dir)
+        os.mkdir(data_dir)
+    
 
     app = make_app()
     app.listen(int(os.environ.get('PORT', '5000')))
