@@ -47,17 +47,24 @@ class ConvertHandler(tornado.web.RequestHandler):
         temp_dir = base + '/tmp'
 
         # size url paramater
-        size_user = self.get_argument('size')
-        if size_user == "A0":
+        size_form = self.get_argument('size')
+        if size_form == "A0":
             size = (9933, 14043)
-        elif size_user == "A1":
+        elif size_form == "A1":
             size = (7016, 9933)
-        elif size_user == "A2":
+        elif size_form == "A2":
             size = (4961, 7016)
-        elif size_user == "A3":
+        elif size_form == "A3":
             size = (3508, 4961)
         else:
             size = (2480, 3508)
+
+        # center_image_form = self.get_argument('center_image')
+
+        # if center_image_form == "1":
+        #     center_image = True
+        # else:
+        #     center_image = False
 
         sesion_hastag = pystretch.hashtag()
         sesion_folder = '{0}/{1}'.format(temp_dir, sesion_hastag)
@@ -67,13 +74,13 @@ class ConvertHandler(tornado.web.RequestHandler):
 
         filename, filename_ext = os.path.splitext(img_name)
         pystretch.resize_image(
-            temp_dir + "/" + img_name, size, '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext))
+            temp_dir + "/" + img_name, size, False, '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext))
 
         # logasyncging.info("Obrazek został przeskalowany")
         # logs.append("Obrazek został przeskalowany")
         # send_to_all_clients("Obrazek został przeskalowany...")
 
-        if size_user == "A3":
+        if size_form == "A3":
             pystretch.cut_image(
                 '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext), 3508, 2480)
         else:
@@ -132,6 +139,9 @@ class UploadHandler(tornado.web.RequestHandler):
             alert_msg = {"type": "warning", "msg": "Wybierz rozmiar plakatu"}
             self.render("home.html", alert_msg=alert_msg)
             alert = True
+
+        # # center image
+        # center_image_form = self.get_argument('center_image')
 
         if not alert:
             logging.info("Wybrano format " + size)

@@ -18,7 +18,7 @@ A1 = (7016, 9933)
 A0 = (9933, 14043)
 
 
-def resize_image(filename, resize_to, output='resized_image.jpg', fill_color=(255, 255, 255, 255)):
+def resize_image(filename, resize_to, center=False, output='resized_image.jpg', fill_color=(255, 255, 255, 255)):
     img = Image.open(filename)
     if img.size[0] > img.size[1]:
         resize_to = (resize_to[1], resize_to[0])
@@ -35,9 +35,13 @@ def resize_image(filename, resize_to, output='resized_image.jpg', fill_color=(25
 
     image_resize = img.resize((resize_width, resize_height), Image.ANTIALIAS)
     new_img = Image.new('RGB', resize_to, fill_color)
-    # offset = (round((resize_to[0] - resize_width) / 2),
-    #           round((resize_to[1] - resize_height) / 2))
-    new_img.paste(image_resize)
+
+    if center:
+        offset = (round((resize_to[0] - resize_width) / 2),
+                round((resize_to[1] - resize_height) / 2))
+        new_img.paste(image_resize, offset)
+    else:
+        new_img.paste(image_resize)
     new_img.save(output)
 
 
