@@ -350,3 +350,5 @@ MigrationBackup/
 
 # temporary folder
 tmp/
+
+static/data/
