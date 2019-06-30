@@ -1,3 +1,5 @@
+__version__ = 1.0
+
 import os
 import shutil
 import random
@@ -59,12 +61,12 @@ class ConvertHandler(tornado.web.RequestHandler):
         else:
             size = (2480, 3508)
 
-        # center_image_form = self.get_argument('center_image')
+        center_image_form = self.get_argument('center_image')
 
-        # if center_image_form == "1":
-        #     center_image = True
-        # else:
-        #     center_image = False
+        if center_image_form == "on":
+            center_image = True
+        else:
+            center_image = False
 
         sesion_hastag = pystretch.hashtag()
         sesion_folder = '{0}/{1}'.format(temp_dir, sesion_hastag)
@@ -74,7 +76,7 @@ class ConvertHandler(tornado.web.RequestHandler):
 
         filename, filename_ext = os.path.splitext(img_name)
         pystretch.resize_image(
-            temp_dir + "/" + img_name, size, False, '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext))
+            temp_dir + "/" + img_name, size, center_image, '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext))
 
         # logasyncging.info("Obrazek został przeskalowany")
         # logs.append("Obrazek został przeskalowany")
@@ -106,6 +108,8 @@ class ConvertHandler(tornado.web.RequestHandler):
 
 class UploadHandler(tornado.web.RequestHandler):
     def post(self):
+        # for debug prupose
+        # print(self.request.arguments)
         alert = False
         uploaded_file = None
 
@@ -140,8 +144,11 @@ class UploadHandler(tornado.web.RequestHandler):
             self.render("home.html", alert_msg=alert_msg)
             alert = True
 
-        # # center image
-        # center_image_form = self.get_argument('center_image')
+        # center image
+        try:
+            center_image_form = self.get_argument('center_image')
+        except tornado.web.MissingArgumentError:
+            center_image_form = "off"
 
         if not alert:
             logging.info("Wybrano format " + size)
@@ -159,7 +166,9 @@ class UploadHandler(tornado.web.RequestHandler):
                 f.close()
             #self.finish("file" + final_filename + " wysłany")
             logging.info("Zapisano plik" + final_filename)
-            self.redirect("/convert?size=" + size)
+            self.redirect("/convert?size=" + size + "&" +
+                          "center_image=" + center_image_form)
+            
 
 
 class MessagesWS(tornado.websocket.WebSocketHandler):
