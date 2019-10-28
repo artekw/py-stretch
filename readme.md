@@ -1,7 +1,7 @@
 # py-stretch
 
 ## Opis
-Aplikacja powiększa (przeskalowuje) obraz do wskazanego formatu.
+Aplikacja powiększa obraz do wskazanego formatu.
 
 Dostępne formaty:
 -  A0
