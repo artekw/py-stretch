@@ -8,11 +8,13 @@ import logging
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
+import tornado.ioloop as ioloop
 
 import pystretch
 
 img_name = ''
-clients = []
+clients = set()
+
 
 # rozmiar formatów
 # szer x wys w pikselach 300dpi
@@ -23,19 +25,9 @@ clients = []
 # A0 = (9933, 14043)
 
 
-def send_to_all_clients(message):
-    for client in clients:
-        if not client.ws_connection.stream.socket:
-            print("Web socket does not exist anymore!!!")
-            clients.remove(client)
-        else:
-            client.write_message(message)
-
-
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         alert_msg = None
-        send_to_all_clients("Open con")
         # alert = {"type": "info", "msg":"info alert"}
         self.render("home.html", alert_msg=alert_msg)
 
@@ -108,7 +100,6 @@ class ConvertHandler(tornado.web.RequestHandler):
 
 class UploadHandler(tornado.web.RequestHandler):
     def post(self):
-        # for debug prupose
         # print(self.request.arguments)
         alert = False
         uploaded_file = None
@@ -173,20 +164,18 @@ class UploadHandler(tornado.web.RequestHandler):
 
 class MessagesWS(tornado.websocket.WebSocketHandler):
     def open(self):
-        print("WebSocket opened")
-        if self not in clients:
-            clients.append(self)
-
-    # def on_message(self, message):
-    #     send_to_all_clients("new client")
-    #     for client in clients:
-    #         if self ot in clients:
-    #             client.write_message("ECHO: " + message)
+        print("Connected...")
+        clients.add(self)
 
     def on_close(self):
-        print("WebSocket closed")
-        if self in clients:
-            clients.remove(self)
+        print("Disconected...")
+        clients.remove(self)
+
+    @classmethod
+    def sendmsg(cls, msg):
+        # print(cls.clients)
+        for client in clients:
+            client.write_message(msg)
 
 
 def make_app():
