@@ -9,7 +9,7 @@ autopep8 = "*"
 [packages]
 tornado = "*"
 pypdf2 = "*"
-pillow = "*"
+pillow = ">=6.2.0"
 img2pdf = "*"
 
 [requires]
