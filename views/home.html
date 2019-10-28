@@ -11,7 +11,7 @@
 
     <form enctype="multipart/form-data" action="/upload" method="post">
     <div class="form-group row">
-        <label for="inputPassword3" class="col-sm-2 col-form-label"><b>Obrazek</b></label>
+        <label for="inputPassword3" class="col-sm-2 col-form-label"><b>Obrazek do powiększenia</b></label>
         <div class="col-sm-10">
             <div class="custom-file">
                 <input type="file" name="uploaded_file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
@@ -20,9 +20,9 @@
         </div>
     </div>
     <div class="form-group row">
-        <label for="pdf_file_name" class="col-sm-2 col-form-label"><b>Plik PDF</b></label>
+        <label for="pdf_file_name" class="col-sm-2 col-form-label"><b>Nazwa wyjściowego pliku PDF</b></label>
             <div class="col-sm-10">
-                <input type="text" name="pdf_file" class="form-control" id="pdf_file_name" placeholder="Nazwa pliku PDF">
+                <input type="text" name="pdf_file" class="form-control" id="pdf_file_name" placeholder="Nazwa pliku PDF (opcjonalne)">
             </div>
     </div>
     <fieldset class="form-group">
@@ -75,7 +75,7 @@
     </div>
     <div class="form-group row">
         <div class="col-sm-10">
-        <button type="submit" class="btn btn-primary">Wyślij plik</button>
+        <button type="submit" class="btn btn-primary">Stwórz plakat</button>
         </div>
     </div>
 </form>
