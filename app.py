@@ -50,8 +50,15 @@ class ConvertHandler(tornado.web.RequestHandler):
             size = (4961, 7016)
         elif size_form == "A3":
             size = (3508, 4961)
-        else:
+        elif size_form == "A4":
             size = (2480, 3508)
+        elif size_form == "user":
+            custom_size_szer = self.get_argument('custom_szer')
+            custom_size_szer = int(custom_size_szer)
+            custom_size_wys = self.get_argument('custom_wys')
+            custom_size_wys = int(custom_size_wys)
+            size = (int((custom_size_szer * 300)/25.4),
+                    int((custom_size_wys * 300)/25.4))
 
         center_image_form = self.get_argument('center_image')
 
@@ -64,7 +71,6 @@ class ConvertHandler(tornado.web.RequestHandler):
         sesion_folder = '{0}/{1}'.format(temp_dir, sesion_hastag)
         os.mkdir(sesion_folder)
         logging.info("Utworzono katalog tymczasowy" + sesion_folder)
-
 
         filename, filename_ext = os.path.splitext(img_name)
         pystretch.resize_image(
@@ -85,7 +91,6 @@ class ConvertHandler(tornado.web.RequestHandler):
         # send_to_all_clients("Obrazek został pociety na kawałki...")
         # logs.append("Obrazek został pociety na kawałki")
 
-
         paths = [sesion_folder + '/' +
                  pdf for pdf in os.listdir(sesion_folder)]
 
@@ -93,7 +98,8 @@ class ConvertHandler(tornado.web.RequestHandler):
         # send_to_all_clients("Generowanie plik PDF...")
         # logs.append("Generowanie plik PDF...")
 
-        download_url = '{}://{}/static/data/{}.pdf'.format(self.request.protocol, self.request.host, filename)
+        download_url = '{}://{}/static/data/{}.pdf'.format(
+            self.request.protocol, self.request.host, filename)
 
         self.render("convert.html", url=download_url)
 
@@ -104,10 +110,10 @@ class UploadHandler(tornado.web.RequestHandler):
         alert = False
         uploaded_file = None
 
-        #check if user choose file
+        # check if user choose file
         try:
             uploaded_file = self.request.files['uploaded_file'][0]
-        except KeyError:         
+        except KeyError:
             alert_msg = {"type": "warning", "msg": "Wybierz plik obrazka"}
             self.render("home.html", alert_msg=alert_msg)
             alert = True
@@ -115,21 +121,24 @@ class UploadHandler(tornado.web.RequestHandler):
         # check extension of uploaded file
         if uploaded_file != None:
             allowed_extensions = [".jpg", ".jpeg", ".png", ".gif"]
-            extension_uploaded_file = os.path.splitext(uploaded_file['filename'])[1]
+            extension_uploaded_file = os.path.splitext(
+                uploaded_file['filename'])[1]
 
             if extension_uploaded_file not in allowed_extensions:
                 alert_msg = {"type": "warning",
-                        "msg": "Nieobsługiwany format pliku. Wymagany jest obraz z rozszerzeniem " + " ".join(allowed_extensions)}
+                             "msg": "Nieobsługiwany format pliku. Wymagany jest obraz z rozszerzeniem " + " ".join(allowed_extensions)}
                 self.render("home.html", alert_msg=alert_msg)
                 alert = True
 
         # pdf file name
         pdf_file_name = self.get_argument('pdf_file')
-        
 
         # check if user choose image size
         try:
             size = self.get_argument('size')
+            if size == 'user':
+                custom_size_szer = self.get_argument('custom_szer')
+                custom_size_wys = self.get_argument('custom_wys')
         except tornado.web.MissingArgumentError:
             alert_msg = {"type": "warning", "msg": "Wybierz rozmiar plakatu"}
             self.render("home.html", alert_msg=alert_msg)
@@ -157,9 +166,14 @@ class UploadHandler(tornado.web.RequestHandler):
                 f.close()
             #self.finish("file" + final_filename + " wysłany")
             logging.info("Zapisano plik" + final_filename)
-            self.redirect("/convert?size=" + size + "&" +
-                          "center_image=" + center_image_form)
-            
+            if size == 'user':
+                self.redirect("/convert?size=" + size + "&" +
+                              "center_image=" + center_image_form + "&" +
+                              "custom_szer=" + custom_size_szer + "&" +
+                              "custom_wys=" + custom_size_wys)
+            else:
+                self.redirect("/convert?size=" + size + "&" +
+                              "center_image=" + center_image_form)
 
 
 class MessagesWS(tornado.websocket.WebSocketHandler):
@@ -213,7 +227,6 @@ if __name__ == "__main__":
         # delete and create clean folder
         shutil.rmtree(data_dir)
         os.mkdir(data_dir)
-    
 
     app = make_app()
     app.listen(int(os.environ.get('PORT', '5000')))

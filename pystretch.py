@@ -12,6 +12,7 @@ Image.MAX_IMAGE_PIXELS = None
 
 # rozmiar formatów
 # szer x wys w pikselach 300dpi
+user = (0, 0)
 A4 = (2480, 3508)
 A3 = (3508, 4961)
 A2 = (4961, 7016)
@@ -39,7 +40,7 @@ def resize_image(filename, resize_to, center=False, output='resized_image.jpg', 
 
     if center:
         offset = (round((resize_to[0] - resize_width) / 2),
-                round((resize_to[1] - resize_height) / 2))
+                  round((resize_to[1] - resize_height) / 2))
         new_img.paste(image_resize, offset)
     else:
         new_img.paste(image_resize)
@@ -57,7 +58,6 @@ def cut_image(filename, width=None, height=None):
     if img.size[0] > img.size[1]:
         # print("Obracam")
         width, height = height, width
-
 
     for i in range(imgwidth//width):
         for j in range(imgheight//height):
@@ -91,7 +91,7 @@ def merge_pdf(filename, paths):
             pdf_writer.addPage(pdf_reader.getPage(page))
 
     with open(filename + '.pdf', 'wb') as fh:
-            pdf_writer.write(fh)
+        pdf_writer.write(fh)
 
 
 def hashtag():
@@ -108,7 +108,7 @@ def hashtag():
 #     for f in os.listdir('.'):
 #         filename, filename_ext = os.path.splitext(f)
 #         if filename_ext == '.jpg':
-#             if not 'resized' in filename: 
+#             if not 'resized' in filename:
 #                 sesion_hastag = hashtag()
 #                 sesion_folder = '{0}/{1}'.format(temp_dir, sesion_hastag)
 #                 os.mkdir(sesion_folder)
@@ -116,10 +116,9 @@ def hashtag():
 #                 resize_image(
 #                     f, A3, '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext))
 #                 cut_image(
-#                     '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext), 2408, 3505)
+#                     '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext), 2480, 3508)
 
 #                 # merge pdf's in one document
 #                 paths = [sesion_folder + '/' + pdf for pdf in os.listdir(sesion_folder)]
 #                 merge_pdf(base + '/' + filename, paths)
 #                 print('Gotowe!')
-
