@@ -11,6 +11,7 @@ tornado = "*"
 pypdf2 = "*"
 pillow = ">=6.2.0"
 img2pdf = "*"
+argparse = "*"
 
 [requires]
 python_version = "3.7"
