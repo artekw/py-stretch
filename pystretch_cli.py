@@ -11,6 +11,7 @@ from PIL import Image
 # Image.MAX_IMAGE_PIXELS = 1000000000
 Image.MAX_IMAGE_PIXELS = None
 
+
 # rozmiar formatów
 # szer x wys w pikselach 300dpi
 
@@ -112,11 +113,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='py-strech - skalowanie i cięcie obrazów na kawałki A4')
     parser.add_argument(
-        "--output_size", default="A2", choices=list(sizes.keys()), required=True, help="Format wyjściowy")
+        "--output_size", choices=list(sizes.keys()), required=True, help="Format wyjściowy")
     parser.add_argument(
-        "--center", help="Centrowanie obrazka na wybranym formacie")
+        "--center", default="no", choices=["yes", "no"], help="Centrowanie obrazka na wybranym formacie")
     parser.add_argument(
-        "--size", help="Własny rozwiar wyjściowy w milimetrach")
+        "--size", help="Własny rozwiar wyjściowy w milimetrach wys:szer")
     parser.add_argument('file', help="Plik obrazka")
 
     args = parser.parse_args()
@@ -127,33 +128,40 @@ if __name__ == "__main__":
 
     if output_size:
         print("Wybrano format {0}".format(output_size))
-"""     if center:
-        print("You choose center")
+    if center == "yes":
+        center_image = True
+        print("Centrowanie włączone")
+    else:
+        center_image = False
     if custom_size == "custom":
-        print("You choose custom") """
+        print("You choose custom")
 
-request = {
-     "file": args.file,
-      "format": args.output_size
-     }
+    request = {
+        "file": args.file,
+        "format": args.output_size
+    }
 
- """ for f in os.listdir(temp_dir): """
-  filename, filename_ext = os.path.splitext(args.file)
-   if filename_ext in allowed_extensions:
+    filename, filename_ext = os.path.splitext(args.file)
+    if filename_ext in allowed_extensions:
         if not 'resized' in filename:
             sesion_hastag = hashtag()
             sesion_folder = '{0}/{1}'.format(temp_dir, sesion_hastag)
             os.mkdir(sesion_folder)
-            print("Plik: {0}".format(args.file))
+            print("Plik obrazka: {0}".format(args.file))
             resize_image(
-                args.file, sizes[args.output_size], False, '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext))
-            cut_image(
-                '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext), 2480, 3508)
-
+                args.file, sizes[args.output_size], center_image, '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext))
+            if args.output_size == "A0" or args.output_size == "A3" or args.output_size == "user":
+                cut_image(
+                    '{0}/{1}_resized{2}'.format(sesion_folder, filename, filename_ext), 2480, 3508)
+            elif args.output_size == "A1" or args.output_size == "A2":
+                cut_image(
+                    '{0}/{1}_resized{2}'.format(sesion_folder,
+                                                filename, filename_ext), 3508, 2480)
             # merge pdf's in one document
             paths = [sesion_folder + '/' +
                      pdf for pdf in os.listdir(sesion_folder)]
             merge_pdf(base + '/' + filename, paths)
+            print("Plik PDF: {0}.pdf".format(base + '/' + filename))
             print('Gotowe!')
     else:
         print("Program obsługuje tylko pliki {0}".format(
