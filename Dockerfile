@@ -1,6 +1,6 @@
-FROM arm32v7/alpine:latest
+FROM alpine:3.14
 MAINTAINER Artur Wronowski "arteqw@gmail.com"
-RUN apk add --no-cache python3 python3-dev py3-setuptools build-base zlib-dev jpeg-dev tiff-dev freetype-dev
+RUN apk add --no-cache python3 python3-dev py3-pip py3-setuptools build-base zlib-dev jpeg-dev tiff-dev freetype-dev libxslt-dev libxml2-dev
 
 COPY . /app
 WORKDIR /app
